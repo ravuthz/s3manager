@@ -4,13 +4,11 @@ services:
     build: .
     ports:
       - 7070:8080
-    environment:
-      - ENDPOINT=s3:9000
-      - ACCESS_KEY_ID=s3manager
-      - SECRET_ACCESS_KEY=s3manager
-      - USE_SSL=false
+    env_file:
+      .env
     depends_on:
       - s3
+    restart: always
   s3:
     container_name: s3
     image: docker.io/minio/minio
@@ -18,8 +16,6 @@ services:
     ports:
       - 9000:9000
       - 9001:9001
-    environment:
-      - MINIO_ACCESS_KEY=s3manager
-      - MINIO_SECRET_KEY=s3manager
-      - MINIO_ADDRESS=0.0.0.0:9000
-      - MINIO_CONSOLE_ADDRESS=0.0.0.0:9001
+    env_file:
+      .env
+    restart: always
